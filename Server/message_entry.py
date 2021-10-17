@@ -17,10 +17,28 @@ from errors import *
 # Classes
 # ----------------------------------------------------------------
 
-class Server():
-    def __init__(self, port_num):
-        print(f"Start server on {port_num}")
+
+class MessageEntry():
+	def __init__(self, id, client_dest, client_src, type, content):
+		self._id = id
+		self._client_dest = client_dest
+		self._client_src = client_src
+		self._type = type
+		self._content = content
 
 
-    def run(self):
-        pass
+	def get_dest(self):
+		return self._client_dest
+
+	def get_src(self):
+		return self._client_src
+
+	def get_type(self):
+		return self._type
+
+	def get_content(self):
+		return self._content
+
+
+
+
