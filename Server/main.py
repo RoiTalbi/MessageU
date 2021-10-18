@@ -2,7 +2,7 @@
 # ----------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------
-import server
+from server import Server
 import logging
 import sys
 
@@ -34,9 +34,7 @@ def main():
         sys.exit(SERVER_CONFIG_ERROR)
 
 
-    # Create and run server on given port
-    server_instance = server.Server(port_num)
-    server_instance.run()
+    Server.start_server(port_num)
 
 
 
