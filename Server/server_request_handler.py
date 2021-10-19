@@ -29,7 +29,7 @@ class ServerRequestsHandler():
         handler_function(request)
 
     def _request_register(request):
-        print("REGISTER2!!!!");
+        print("REGISTER4!!!!");
         pass
 
     def _request_get_clients_list(request):
