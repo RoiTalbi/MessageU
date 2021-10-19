@@ -4,7 +4,9 @@
 # ----------------------------------------------------------------
 from errors import *
 from globals import *
+from server_codes import *
 
+from server_request_handler import ServerRequestsHandler 
 import logging
 import sys
 import selectors
@@ -30,11 +32,6 @@ SERVER_MAXIMUM_CLIENTS = 100
 # ----------------------------------------------------------------
 # Classes
 # ----------------------------------------------------------------
-
-
-
-
-
 
 
 class Server():
@@ -83,40 +80,6 @@ class Server():
             for key, mask in events:
                 callback = key.data
                 callback(key.fileobj, mask)
-
-
-
-class ServerRequestsHandler():
-
-    def handle_request(request):
-
-        # Invoke matching handler function by using request code
-        handler_function = ServerRequestsHandler.request_handlers[1000]
-        handler_function(request)
-
-    def _request_register(request):
-        print("REGISTER!!!!");
-        pass
-
-    def _request_get_clients_list(request):
-        pass
-
-    def _request_get_client_public_key(request):
-        pass
-
-    def _request_send_message(request):
-        pass
-
-    def _request_get_pending_messages(request):
-        pass
-
-
-    request_handlers = {
-    OPCODE_REGISTER : _request_register,                           \
-    OPCODE_GET_CLIENTS_LIST : _request_get_clients_list,           \
-    OPCODE_GET_CLIENT_PUBLIC_KEY : _request_get_client_public_key, \
-    OPCODE_SEND_MESSAGE : _request_send_message,                   \
-    OPCODE_GET_PENDING_MESSAGES : _request_get_pending_messages  }
 
 
 
