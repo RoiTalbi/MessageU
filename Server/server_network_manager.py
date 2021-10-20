@@ -26,10 +26,6 @@ import uuid
 SERVER_MAXIMUM_CLIENTS = 100
 
 
-
-REQUEST_STRUCT_FORMAT = '<16sBHI'
-REQUEST_HEADERS_SIZE = 23
-
 # ----------------------------------------------------------------
 # Classes
 # ----------------------------------------------------------------
@@ -39,14 +35,11 @@ class ServerNetworkManager():
 
     def process_new_request(data):
 
-        # Parse request
-        unpacked_data = struct.unpack(REQUEST_STRUCT_FORMAT, data[:REQUEST_HEADERS_SIZE]);
-        payload = data[REQUEST_HEADERS_SIZE:]
-        request  = Request(*unpacked_data + (payload,))
+        # Crete new request and process it
+        request  = Request(data)
         print("----->REQUEST ==" + str(request))
-
-        # Handle request
-        server.Server.handle_request(request);
+        response = server.Server.handle_request(request)
+        return response
 
 
     def accept(sock, mask):
@@ -62,7 +55,7 @@ class ServerNetworkManager():
         if data:
             #print('Handling request - ', repr(data), 'from', connection)
             respone = ServerNetworkManager.process_new_request(data)
-            connection.send(data)
+            connection.send(respone.packed_data())
             
         else:
             print('closing', connection)

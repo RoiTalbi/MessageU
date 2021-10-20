@@ -8,6 +8,7 @@ import uuid
 import time
 
 from server_network_manager import ServerNetworkManager
+from server_response import Response
 from client import Client
 from errors import *
 from globals import *
@@ -37,8 +38,8 @@ class Server():
     def handle_request(request):
 
         # Invoke matching handler function by using request code
-        handler_function = REQUEST_HANDLERS[1000]
-        handler_function(request)
+        handler_function = REQUEST_HANDLERS[request.code]
+        return handler_function(request)
 
 
     def _register_new_client(name, public_key):
@@ -53,6 +54,8 @@ class Server():
         new_client = Client(uuid.uuid4(), name, public_key, time.time())
         Server.clients.append(new_client)
 
+        return new_client
+
     # -------------------------- Request Handler functions --------------------------
 
     def _request_register(request):
@@ -61,7 +64,17 @@ class Server():
         client_data = struct.unpack(REQUEST_REGISTER_PAYLOAD_FORMAT, request.payload)
 
         try:
-            Server._register_new_client(*client_data)
+
+            # Register new client and return maching response 
+            new_client = Server._register_new_client(*client_data)
+
+            Server.print_clients()
+
+            response = Response(SERVER_VERSION, RESPONSE_CODE_REGISTER, CLIENT_ID_SIZE, new_client.get_id().bytes)
+            print(str(response))
+
+            Server.print_clients()
+            return response
 
 
         except ServerException as ex:
@@ -69,6 +82,10 @@ class Server():
             print(str(ex))
             pass 
 
+
+    def print_clients():
+        for c in Server.clients:
+            print (str(c))
 
     def _request_get_clients_list(request):
         pass

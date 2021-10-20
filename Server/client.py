@@ -37,13 +37,17 @@ class Client():
 
 
     def get_id(self):
-        return id
+        return self._id
 
     def get_name(self):
         return self._name
 
     def get_public_key(self):
         return self._public_key
+
+    #TODO - REMOVE !!!!!!!!!!!!!!!
+    def __str__(self):
+        return f" ID= {self._id} | Name= {self._name[:10]}| \n\n";
 
 
 
