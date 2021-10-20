@@ -23,13 +23,14 @@ REQUEST_REGISTER_PAYLOAD_FORMAT = '<255s160s'
 
 
 # ----------------------------------------------------------------
-# Request Handlers
+# Classes
 # ----------------------------------------------------------------
 
 class Server():
 
     def _init_server():
-        Server.clients = []
+        Server._clients = []
+        Server._general_error_response = Response(SERVER_VERSION, SERVER_ERROR_CODE, 0, b'')
 
     def start_server(port_num):
         Server._init_server();
@@ -45,16 +46,18 @@ class Server():
     def _register_new_client(name, public_key):
 
         # check if same client already exsist 
-        for client in Server.clients:
+        for client in Server._clients:
             if client.get_name() == name:
                 raise ClientExsistsException("Client Already Exsists")
 
         # Create new client
         # TODO - make sure client id unquie!!!!!!!!!!!!!!!
         new_client = Client(uuid.uuid4(), name, public_key, time.time())
-        Server.clients.append(new_client)
+        Server._clients.append(new_client)
 
         return new_client
+
+
 
     # -------------------------- Request Handler functions --------------------------
 
@@ -78,13 +81,13 @@ class Server():
 
 
         except ServerException as ex:
-            # TODO - Handle errors!!!!!!!!!!!
+            # TODO - Handle errors correctly (?) !!!!!!!!!!
             print(str(ex))
-            pass 
+            return Server._general_error_response 
 
 
     def print_clients():
-        for c in Server.clients:
+        for c in Server._clients:
             print (str(c))
 
     def _request_get_clients_list(request):
