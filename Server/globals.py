@@ -3,4 +3,4 @@
 # Global Constants
 # ----------------------------------------------------------------
 
-SERVER_PACKET_SIZE = 1024
+SERVER_PACKET_SIZE = 4096
